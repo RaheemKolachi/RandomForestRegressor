@@ -1,0 +1,18 @@
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+import pandas as pd
+import matplotlib.pyplot as plt
+data1=load_boston()
+data=pd.DataFrame(data1["data"],columns=data1["feature_names"])
+data["Traget"]=pd.Series(data1["target"])
+x=data.iloc[:,:-1]
+y=data.iloc[:,-1:]
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2)
+plt.plot(xtrain,ytrain,"ro");
+rf=RandomForestRegressor()
+rf.fit(xtrain,ytrain)
+predrf=rf.predict(xtest)
+plt.plot(xtest,ytest,"ro",xtest,predrf,"--y")
+r2_score(ytest,predrf);
